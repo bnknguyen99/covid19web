@@ -1,0 +1,85 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic_responsive.css'%}">
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> 
+
+{% endblock %}
+{% block content %}
+
+
+<div class="home">
+    <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/about.jpg'%}" data-speed="0.8"></div>
+    <div class="home_container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="home_content">
+                        <div class="home_title"><span>DIỄN BIẾN DỊCH</span> </div>
+                        <div class="breadcrumbs">
+                            <ul>
+                                <li><a href="/">TRANG CHỦ</a></li>
+                                <li>THỐNG KÊ</li>
+								<li>DIỄN BIẾN DỊCH</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="section_title"><h2>DIỄN BIẾN DỊCH TẠI CÁC ĐỊA PHƯƠNG <span class="nguonthongtin">Nguồn: <a href="https://covid19.gov.vn/" target="_blank">Bộ Y Tế</a></span></h2></div>
+	<form  method="get" class=" form-inline">
+		{{ filter.form }} 
+		<input type="submit" value="Lọc" style="margin-left: 1.5em;"/>
+	</form>
+	<div class="table-wrapper-scroll-y my-custom-scrollbar text-justify" style="height: 100%; max-height: 1200px;" >
+        <div class="container mt-5 mb-5">
+            {% for i in Dienbiendich %}
+            <div class="row">
+                <div class="col-md-2">
+                    <span class= "float-right" style="margin: 50% 20px; color: #1b2364;">{{i.ngaycapnhat}}</span>
+                </div>
+                <div class="col-md-10">
+                    <ul class="timeline">
+                        <li><h4>{{i.tieude}}</h4></li>
+                        <li style="margin-right: 30px;">
+                            <span clas="dienbien">
+                                {{i.dienbien|safe|linebreaks}}
+                            </span>
+                            <hr><br>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+            
+    </div>
+</div>
+
+<br><br>
+
+<div class="cta">
+    <div class="cta_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/cta.jpg'%}" data-speed="0.8"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="cta_content text-center">
+                    <h2>Cần tư vấn tại chỗ?</h2>
+                    <h3 style="color: aliceblue;"> Sử dụng ngay Chatbot tư vấn về Covid-19 </h3>
+                    <div class="button cta_button"><a href="#">Bắt đầu chat</a></div>
+                </div>
+            </div>
+        </div>
+    </div>		
+</div>
+
+
+{% endblock %}

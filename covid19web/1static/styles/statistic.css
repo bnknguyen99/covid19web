@@ -1,0 +1,482 @@
+
+/*********************************
+4. Menu
+*********************************/
+
+/*********************************
+5. Home
+*********************************/
+.my-custom-scrollbar {
+	position: relative;
+	width: 100%;
+	height: 475px;
+	overflow: auto;
+	box-shadow: 0 4px 12px 0 rgb(34 41 47 / 25%);
+	padding: 0;
+
+}
+.table-wrapper-scroll-y {
+	display: block;
+}
+
+.table thead{
+	background-color: #283290;
+	color: white;
+	box-shadow: 0 4px 12px 0 rgb(34 41 47 / 20%);
+	position: sticky;
+	top: 0;
+	padding: 50px;
+}
+.home
+{
+	width: 100%;
+	height: 473px;
+}
+.home_background
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.home_container
+{
+	position: absolute;
+	left: 0;
+	bottom: 118px;
+	width: 100%;
+}
+.home_title
+{
+	font-size: 30px;
+	font-weight: 900;
+	color: #FFFFFF;
+}
+.home_title span
+{
+	color: #20d34a;
+}
+.breadcrumbs
+{
+	margin-top: -2px;
+}
+.breadcrumbs ul li
+{
+	display: inline-block;
+	position: relative;
+}
+.breadcrumbs ul li:not(:last-child)::after
+{
+	display: inline-block;
+	position: relative;
+	content: '/';
+	margin-left: 7px;
+	margin-right: 2px;
+}
+.breadcrumbs ul li,
+.breadcrumbs ul li a
+{
+	font-size: 14px;
+	font-weight: 500;
+	color: #FFFFFF;
+}
+
+/*********************************
+6. About
+*********************************/
+
+.about
+{
+	width: 100%;
+	background: #FFFFFF;
+	padding-top: 96px;
+	padding-bottom: 94px;
+}
+.about_text
+{
+	margin-top: 26px;
+	padding-right: 95px;
+}
+.loaders_container
+{
+	margin-top: 85px;
+}
+.loader
+{
+	width: 118px;
+	height: 118px;
+	margin: 0 auto;
+}
+.loader span
+{
+	position: absolute;
+	left: 50%;
+	bottom: -42px;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	font-size: 18px;
+	font-weight: 500;
+	color: #232323;
+	white-space: nowrap;
+}
+.about_button
+{
+	margin-top: 129px;
+}
+.box
+{
+	width: 100%;
+	height: 260px;
+	background: #283290;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+	padding: 10px;
+	box-shadow: 0 4px 12px 0 rgb(34 41 47 / 55%);
+}
+.box:not(:last-child)
+{
+	margin-bottom: 34px;
+}
+.box::after
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 4px;
+	background: #20d34a;
+	content: '';
+}
+.box:hover
+{
+	box-shadow: 0px 15px 49px rgba(0,0,0,0.59);
+}
+.box_title
+{
+	font-size: 20px;
+	font-weight: 500;
+	color: #FFFFFF;
+
+	text-align: center;
+}
+
+.box_icon
+{
+	width: 37px;
+	height: 37px;
+}
+.box_icon img
+{
+	max-width: 100%;
+}
+.box_text
+{
+	font-size: 14px;
+	line-height: 2.14;
+	color: #FFFFFF;
+	font-weight: 400;
+	margin-top: 23px;
+}
+.box_phone
+{
+	font-size: 30px;
+	font-weight: 400;
+	color: #20d34a;
+	margin-top: 20px;
+}
+
+
+
+
+
+/*********************************
+7. Testimonials
+*********************************/
+
+.testimonials
+{
+	width: 100%;
+	padding-top: 94px;
+	padding-bottom: 95px;
+}
+.testimonials_background
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.test_row
+{
+	margin-top: 57px;
+}
+.testimonial
+{
+	width: 100%;
+}
+.test_icon
+{
+	width: 45px;
+	height: 45px;
+	background: #20d34a;
+}
+.test_text
+{
+	font-size: 18px;
+	font-weight: 400;
+	color: #FFFFFF;
+	font-style: italic;
+	margin-top: 34px;
+	line-height: 1.77;
+}
+.test_author
+{
+	margin-top: 46px;
+}
+.test_author_image div
+{
+	width: 65px;
+	height: 65px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.test_author_image div img
+{
+	max-width: 100%;
+}
+.test_author_name
+{
+	padding-left: 20px;
+}
+.test_author_name a
+{
+	font-size: 16px;
+	font-weight: 400;
+	color: #FFFFFF;
+	font-style: italic;
+}
+.test_author_name span
+{
+	color: #20d34a;
+	font-style: italic;
+}
+
+/*********************************
+8. Team
+*********************************/
+
+.team
+{
+	width: 100%;
+	background: #FFFFFF;
+	padding-top: 95px;
+	padding-bottom: 89px;
+}
+.team_row
+{
+	margin-top: 74px;
+}
+.team_member
+{
+	width: 100%;
+}
+.team_member_image
+{
+	width: 100%;
+	height: 337px;
+}
+.team_member_image img
+{
+	max-width: 100%;
+}
+.team_member_info
+{
+	width: 100%;
+	text-align: center;
+	margin-top: 57px;
+}
+.team_member_name a
+{
+	font-size: 18px;
+	font-weight: 500;
+	color: #232323;
+}
+.team_member_title
+{
+	font-size: 14px;
+	font-weight: 400;
+	color: #696969;
+	margin-top: 9px;
+}
+.nguonthongtin
+{
+	font-size: 10px;
+}
+/*********************************
+9. CTA
+*********************************/
+
+.cta
+{
+	width: 100%;
+	padding-top: 131px;
+	padding-bottom: 116px;
+}
+.cta_background
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.cta_content
+{
+	max-width: 768px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.cta_content h2
+{
+	font-size: 48px;
+	font-weight: 700;
+	color: #FFFFFF;
+}
+.cta_content p
+{
+	font-size: 14px;
+	font-weight: 500;
+	color: #FFFFFF;
+	margin-top: -3px;
+}
+.cta_button
+{
+	margin-top: 38px;
+}
+
+/*********************************
+10. Footer
+*********************************/
+
+.form-inline {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+  }
+  
+  /* Add some margins for each label */
+  .form-inline label {
+	padding: 0 20px;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: left;
+  }
+  
+  /* Style the input fields */
+  .form-inline input {
+	vertical-align: middle;
+	padding: 5px 20px;
+	background-color: #283290;
+
+	margin-bottom: 1em;
+	color: #fff;
+	border: 1px solid #ddd;
+	float: right;
+  }
+  .form-inline input:hover {
+	background-color: #1b2364;
+  }
+  /* Style the submit button */
+  label {
+	margin-bottom: 20px;
+	color: #020523;
+  }
+  select {
+	color: #fff;
+	background-color: #283290;
+	padding: 5px 20px;
+	margin-bottom: 1em;
+  }
+  
+  /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
+ul.timeline {
+    list-style-type: none;
+    position: relative;
+	padding: 0 20px 0 20px;
+}
+ul.timeline:before {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: -15px;
+    width: 2px;
+    height: 100%;
+}
+
+ul.timeline > li:before {
+    content: ' ';
+    background: white;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid #22c0e8;
+    left: -24px;
+    width: 20px;
+	top: 19%;
+    height: 20px;
+    z-index: 400;
+}
+span > li >p{
+	color: #1b2364;
+	font-weight: 700;
+}
+
+
+.total{
+	color: #1b2364;
+	height: 150px;
+	padding: 5px 10px;
+	text-align: center;
+	box-shadow: 0 4px 12px 0 rgb(34 41 47 / 25%);
+
+}
+
+.total_mini{
+	top: 20px;
+	text-align: left;
+	padding: 0 0 0 50px;
+	width: 50%;
+	height: 100px;
+	
+
+}
+
+.total_mini::before{
+    content: ' ';
+    background: #283290;
+    display: inline-block;
+    position: absolute;
+	left: 25px;
+    width: 3px;
+	top: -20px;
+    height: 100%;
+
+}
+
+.total_vaccine{
+	height: auto;
+	margin-left: 80px;
+	padding: 14px 15px 0 15px;
+	color: #1b2364;
+	text-align: right;
+}

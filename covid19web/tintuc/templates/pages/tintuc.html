@@ -1,0 +1,249 @@
+{% extends "pages/base.html" %}
+{% block css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/news.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/news_responsive.css'%}">
+{% endblock %}
+{% block content %}
+
+{% load static %}
+
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/news.jpg'%}" data-speed="0.8"></div>
+		<div class="home_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="home_content">
+							<div class="home_title"><span>TỔNG HỢP TIN TỨC</span></div>
+							<div class="breadcrumbs">
+								<ul>
+									<li><a href="/home">TRANG CHỦ</a></li>
+									<li>TIN TỨC</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- News -->
+
+<div class="news">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="news_posts">	
+					{% for baiviet in Baiviet %}
+					<div class="news_posts">
+						<div class="news_post">
+							<div class="news_image" style="height:300px; overflow-y: hidden;">
+								<img src="{{baiviet.hinhanh}}" alt="" width="100%" >
+								<div class="news_date d-flex flex-column align-items-center justify-content-center">
+										<div class="news_day">Ngày đăng: {{baiviet.ngaydangbaiviet}}</div>
+								</div>
+							</div>
+							<div class="news_body">
+								<div class="news_title"><a href="/tintuc/{{baiviet.idbaiviet}}">{{baiviet.tenbaiviet}}</a></div>
+								<div class="news_info">
+									<ul>
+										<li class="news_author"><span>Tác giả: </span><a href="#">{{baiviet.tacgia}}</a></li>
+										<li class="news_tags"><span>Chuyên mục: </span><a href="#">{{baiviet.chudebaiviet}}</a></li>
+									</ul>
+								</div>
+								<div class="news_text ">
+									<p class = "text-justify" >{{baiviet.tomtat}}</p>
+								</div>
+								<div class="news_link"><a href="/tintuc/{{baiviet.idbaiviet}}">Xem thêm</a></div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					<br/>
+					{% if is_paginated %}
+            <div class="float-right">
+            <nav aria-label="Page navigation"> <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1#scn-vn" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">begin</span>
+                  </a>
+                </li>   {% endif %}
+                
+                {% for n in page_obj.paginator.page_range %}
+                  {% if page_obj.number == n %}
+                    <li class="page-item active">
+                      <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                    </li>
+                  {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ n }}#scn-vn" >{{ n }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}#scn-vn" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">end</span>
+                    </a>
+                  </li>
+                  {% endif %}   </ul> </nav></div>
+        {% endif %}
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="sidebar">
+					<div class="sidebar_search">
+						<form action="#" id="sidebar_search_form" class="sidebar_search_form">
+							<input type="text" class="search_input" placeholder="Search" required="required">
+								<button class="search_button"><img src="{% static 'images/search.png'%}" alt=""></button>
+						</form>
+					</div>
+					<div class="sidebar_categories sidebar_section">
+						<div class="sidebar_section_title">
+							<div class="sidebar_title" style="font-size: 16px;">CHUYÊN MỤC</div>
+						</div>
+						<ul>
+							{% for chude in category %}
+								<li><a href="#">{{ chude.chude }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+
+					<div class="sidebar_categories sidebar_section">
+						<div class="sidebar_section_title">
+							<div class="sidebar_title" style="font-size: 16px;">TÌNH HÌNH DỊCH</div>
+						</div>
+						<br><br>
+						<div class="box box_appointments" >
+							<p class="box_title">Số ca nhiễm</p>
+							<canvas id="socanhiem_vn" style="width:100%;height: 80%;"></canvas>
+						</div>
+						<div class="box box_appointments" >
+							<p class="box_title">Số ca phục hồi</p>
+							<canvas id="khoi_vn" style="width:100%;height: 80%;"></canvas>
+						</div>
+						<div class="box box_appointments" >
+							<p class="box_title">Số ca tử vong</p>
+							<canvas id="tuvong_vn" style="width:100%;height: 80%;"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<script>
+	var xlabel = [{% for i in time %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.tongsoca}},{% endfor %}];
+	new Chart("socanhiem_vn", {
+	type: "line",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#ff1500",
+			lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12, 
+					callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            }}}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.khoi}},{% endfor %}];
+	new Chart("khoi_vn", {
+	type: "line",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#00ff04",
+			lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12, 
+					callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            }}}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.tuvong}},{% endfor %}];
+	new Chart("tuvong_vn", {
+	type: "line",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#fcf7f7",
+			lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12, }}],            
+            },	  
+	    },
+	});
+</script>
+
+
+	{% endblock %}

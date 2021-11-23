@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" type="text/css" href="{%static '/styles/bootstrap4/bootstrap.min.css' %}">
+   <link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+   <link rel="icon" href="{% static '/images/iconweb.png' %}">
+   <!--- Tiêu đề của trang --->
+   <title>{% block title %}{% endblock %}</title>
+   <!--- CSS riêng của trang --->
+   {% block css %}{% endblock %}
+   <link rel="stylesheet" type="text/css" href="{% static 'styles/base.css'%}">
+</head>
+<body>
+<div class="super_container">
+    <header class="header trans_200">
+		<div class="top_bar">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
+							<div class="top_bar_item"><a href="/admin">Admin</a></div>
+							<div class="top_bar_item"><a href="#footer">Mô tả</a></div>
+							<div class="emergencies d-flex flex-row align-items-center justify-content-start ml-auto">Hotline:&nbsp;<a href="tel:19009095" style="color: white;">1900 9095</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Header Content -->
+		<div class="header_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="header_content d-flex flex-row align-items-center justify-content-start">
+							<nav class="main_nav ml-auto">
+								<ul>
+									<li><a href="{% url 'tintuc' %}" style="color: #1b2364;">Tin tức</a></li>
+									<li><a href="{% url 'dienbiendich' %}" style="color: #1b2364;">Diễn biến dịch</a></li>
+									<li><a href="{% url 'tinhhinhcovid' %}" style="color: #1b2364;">Tình hình dịch</a></li>
+									<li><a href="{% url 'thongtintiemchung' %}" style="color: #1b2364;">Thông tin tiêm chủng</a></li>
+									{% if user.username %}
+									<li><a href="/" style="color: #1b2364;">Hi, {{user.username}}</a></li>
+									<li><a href="{% url 'logout' %}?next={{request.path}}" style="color: #1b2364;"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+									{% else %}
+									<li>
+										<a  href="{% url 'login' %}?next={{request.path}}" style="color: #1b2364;">Đăng Nhập</a>
+									</li>
+									<li>
+										<a href="{% url 'register' %}"  style="color: #1b2364;">Đăng Kí</a>
+									</li>
+									{% endif %}
+								</ul>
+							</nav>
+							<div class="hamburger ml-auto"><i class="fa fa-bars" aria-hidden="true"></i></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Logo -->
+		<div class="logo_container_outer">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="logo_container">
+							<a href="{% url 'home' %}">
+								<div class="logo_content d-flex flex-column align-items-start justify-content-center">
+									<div class="logo_line"></div>
+									<div class="logo d-flex flex-row align-items-center justify-content-center">
+										<div class="logo_text">Covid<span>19</span></div>
+										<div class="logo_box"><i class="fa fa-thermometer-full" aria-hidden="true"></i>
+										</div>
+									</div>
+									<div class="logo_sub">Tổng hợp tin tức</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+
+	</header>
+
+    {% block content %}
+  
+
+    <!--- content riêng của trang --->
+
+
+    {% endblock %}
+
+    <footer class="footer" id="footer">
+		<div class="footer_container">
+			<div class="container">
+				<div class="row">
+					
+					<!-- Footer - About -->
+					<div class="col-lg-4 footer_col">
+						<div class="footer_about">
+							<div class="footer_logo_container">
+								<a href="#" class="d-flex flex-column align-items-center justify-content-center">
+									<div class="logo_content">
+										<div class="logo d-flex flex-row align-items-center justify-content-center">
+											<div class="logo_text">Covid<span>19</span></div>
+											<div class="logo_box"><i class="fa fa-thermometer-full" aria-hidden="true"></i></div>
+										</div>
+										<div class="logo_sub">Tổng hợp tin tức</div>
+									</div>
+								</a>
+							</div>
+							<div class="footer_about_text">
+								<p>Đồ án tốt nghiệp của thuộc trường Đại Học Cần Thơ<p>
+							</div>
+							<ul class="footer_about_list">
+								<li><div class="footer_about_icon"><img src="{% static 'images/phone-call.svg'%}" alt=""></div><span>0869087117</span></li>
+								<li><div class="footer_about_icon"><img src="{% static 'images/envelope.svg'%}" alt=""></div><span>bnknguyen99@gmail.com</span></li>
+								<li><div class="footer_about_icon"><img src="{% static 'images/placeholder.svg'%}" alt=""></div><span>Ô Môn, Cần Thơ</span></li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Footer - Links -->
+					<div class="col-lg-4 footer_col">
+						<div class="footer_links footer_column">
+							<div class="footer_title">Thông tin trong trang web được lấy từ các nguồn sau</div>
+							<br/>
+							<p><a href="https://covid19.gov.vn/" target="_blank">Bộ Y Tế</a></p>
+							<p><a href="https://tiemchungcovid19.gov.vn/portal" target="_blank">Thông tin tiêm chủng</a></p>
+							<p><a href="https://baotintuc.vn/" target="_blank">Báo tin tức Thông tấn Xã Việt Nam</a></p>
+							<p><a href="https://www.worldometers.info/coronavirus/" target="_blank">World Meters</a></p>
+						</div>
+					</div>
+
+					<!-- Footer - News -->
+					<div class="col-lg-4 footer_col">
+						<div class="footer_news footer_column">
+							<div class="footer_title">Useful Links</div>
+							<ul>
+								<li>
+									<div class="footer_news_title"><a href="news">Aliquam ac eleifend metus</a></div>
+									<div class="footer_news_date">March 10, 2018</div>
+								</li>
+								<li>
+									<div class="footer_news_title"><a href="news">Donec in libero sit amet mi vulputate</a></div>
+									<div class="footer_news_date">March 10, 2018</div>
+								</li>
+								<li>
+									<div class="footer_news_title"><a href="news">Aliquam ac eleifend metus</a></div>
+									<div class="footer_news_date">March 10, 2018</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="copyright">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="copyright_content d-flex flex-lg-row flex-column align-items-lg-center justify-content-start">
+							<div class="cr"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Website tổng hợp tin tức về đại dịch COVID-19 | Powered by <a href="https://www.djangoproject.com/" target="_blank">Django</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></div>
+							<div class="footer_social ml-lg-auto">
+								<ul>
+									<li>Xem mã nguồn trang tại<a href="#"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			
+		</div>
+	</footer>
+
+</div>
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js'%}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js'%}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js'%}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js'%}"></script>
+<script src="{% static 'plugins/easing/easing.js'%}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js'%}"></script>
+<script src="{% static 'js/custom.js'%}"></script>
+</body>
+</html>

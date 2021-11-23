@@ -1,0 +1,143 @@
+{% extends "pages/base.html" %}
+{% block css %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/news.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/news_responsive.css'%}">
+{% endblock %}
+{% block content %}
+
+{% load static %}
+
+	<!-- Menu -->
+
+	<div class="menu_container menu_mm">
+
+		<!-- Menu Close Button -->
+		<div class="menu_close_container">
+			<div class="menu_close"></div>
+		</div>
+
+		<!-- Menu Items -->
+		<div class="menu_inner menu_mm">
+			<div class="menu menu_mm">
+				<ul class="menu_list menu_mm">
+					<li class="menu_item menu_mm"><a href="index.html">Home</a></li>
+					<li class="menu_item menu_mm"><a href="about.html">About us</a></li>
+					<li class="menu_item menu_mm"><a href="services.html">Services</a></li>
+					<li class="menu_item menu_mm"><a href="news.html">News</a></li>
+					<li class="menu_item menu_mm"><a href="contact.html">Contact</a></li>
+				</ul>
+			</div>
+			<div class="menu_extra">
+				<div class="menu_appointment"><a href="#">Request an Appointment</a></div>
+				<div class="menu_emergencies">For Emergencies: 1900 9095</div>
+			</div>
+
+		</div>
+
+	</div>
+	
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/news.jpg'%}" data-speed="0.8"></div>
+		<div class="home_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="home_content">
+							<div class="home_title"><span>TỔNG HỢP TIN TỨC</span></div>
+							<div class="breadcrumbs">
+								<ul>
+									<li><a href="/home">TRANG CHỦ</a></li>
+									<li>TIN TỨC</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- News -->
+
+	<div class="news">
+		<div class="container">
+			<div class="row">
+				<!-- News Posts -->
+				<div class="col-lg-8">
+					<div class="news_posts">
+					<div class="news_posts">
+						<h2 style="color:#283290">{{Baiviet.tenbaiviet}}</h2>
+						<h5>Ngày đăng: {{Baiviet.ngaydangbaiviet}}</h5>
+						<br>
+						<span class="text-justify" >{{Baiviet.noidungbaiviet|safe|linebreaks}}</span>
+						<p class="text-right"><strong>{{Baiviet.tacgia}}</strong></p>
+					</div>
+				</div>
+				<div id="guibinhluan">
+					<hr >
+					{% for comment in binhluan %}
+						<div class="col-lg-12" >
+							<div class="row">
+								<h4><strong>{{comment.taikhoan}} </strong><span style="font-size: 10px; text-align: end;">({% load humanize %}{{comment.ngaydangbinhluan|naturaltime}})</span></h4>
+							</div>
+						{{comment.noidungbinhluan|linebreaks}}
+						<hr>
+						</div>
+					{% endfor %}
+					{% if user.username %}
+					<form action="/tintuc/{{Baiviet.idbaiviet}}" method="POST" name="binhluanf">
+						{% csrf_token %}
+						<p><label>Nhập bình luận:</label></p>
+						<div class="row">
+							<div class="col-lg-2">
+								<div class="username_binhluan">
+									<strong>{{user.username}}</strong>
+								</div>
+							</div>
+							<div class="col-lg-10">
+								{{form}}
+							</div>
+						</div>
+						<input  class="btn btn-primary btn-sm" type="submit" value="Gửi bình luận"/>
+					</form>
+					{% endif %}
+
+				</div>
+			</div>
+
+				<!-- Sidebar -->
+				<div class="col-lg-4">
+					<div class="sidebar">
+
+						<!-- Search -->
+						<div class="sidebar_search">
+							<form action="#" id="sidebar_search_form" class="sidebar_search_form">
+								<input type="text" class="search_input" placeholder="Search" required="required">
+								<button class="search_button"><img src="{% static 'images/search.png'%}" alt=""></button>
+							</form>
+						</div>
+
+						<!-- Categories -->
+						<div class="sidebar_categories sidebar_section">
+							<div class="sidebar_section_title">
+								<div class="sidebar_title" style="font-size: 16px;">CHUYÊN MỤC</div>
+							</div>
+							<ul>
+								{% for chude in category %}
+								<li><a href="#">{{ chude.chude }}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	{% endblock %}

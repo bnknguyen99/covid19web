@@ -1,0 +1,348 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic_responsive.css'%}">
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> 
+
+{% endblock %}
+{% block content %}
+
+
+<div class="home">
+    <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/about.jpg'%}" data-speed="0.8"></div>
+    <div class="home_container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="home_content">
+                        <div class="home_title"><span>SỐ LIỆU THỐNG KÊ </span> </div>
+                        <div class="breadcrumbs">
+                            <ul>
+                                <li><a href="/">TRANG CHỦ</a></li>
+                                <li>THỐNG KÊ</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="boxes">
+    <div class="container">
+        <div class="section_title"><h2>DIỄN BIẾN DỊCH TẠI CÁC ĐỊA PHƯƠNG <span class="nguonthongtin">Nguồn: <a href="https://covid19.gov.vn/" target="_blank">Bộ Y Tế</a></span></h2></div>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar text-justify">
+            <div class="container mt-5 mb-5">
+                {% for i in dienbien %}
+                <div class="row">
+                    <div class="col-md-2">
+                        <span class= "float-right" style="margin: 50% 20px; color: #1b2364;">{{i.ngaycapnhat}}</span>
+                      </div>
+                    <div class="col-md-10">
+                        <ul class="timeline">
+                            <li><h4>{{i.tieude}}</h4></li>
+                            <li style="margin-right: 30px;">
+                                <span clas="dienbien">
+                                    {{i.dienbien|safe|linebreaks}}
+                                </span>
+                               <hr><br>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+         </div>
+            </div>
+            <div class="content-div" >
+                <div class="boxes">
+                    <div class="container">
+                        <div class="section_title"><h2>Thế giới</h2></div>
+
+                        <div class="row">
+                            
+                            <!-- Box -->
+                            <div class="col-lg-4 box_col">
+                                <div class="box box_appointments" >
+                                    <p class="box_title">Số ca nhiễm</p>
+                                    <canvas id="chart1" style="width:100%;height: 80%;"></canvas>
+                                </div>
+                </div>
+
+                <!-- Box -->
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca phục hồi</p>
+                        <canvas id="chart2" style="width:100%;height: 80%;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Box -->
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca tử vong	</p>
+                        <canvas id="chart3" style="width:100%;height: 80%;"></canvas>
+                </div>
+
+            </div>
+        </div>
+    </div > 
+</div > 
+    <div class="boxes">
+        <div class="container">
+            <div class="section_title"><h2>Việt Nam</h2></div>
+
+            <div class="row">
+                <!-- Box -->
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments" >
+                        <p class="box_title">Số ca nhiễm</p>
+                        <canvas id="chart1" style="width:100%;height: 80%;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Box -->
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca phục hồi</p>
+                        <canvas id="chart2" style="width:100%;height: 80%;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Box -->
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca tử vong	</p>
+                        <canvas id="chart3" style="width:100%;height: 80%;"></canvas>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div > 
+
+
+    <div class="boxes">
+        <div class="container">
+            <div class="section_title"><h2>SỐ CA NHIỄM TẠI VIỆT NAM THEO TỈNH/THÀNH PHỐ <span class="nguonthongtin">Nguồn: <a href="https://covid19.gov.vn/" target="_blank">Bộ Y Tế</a></span></h2></div>
+            <form  method="get" class=" form-inline">
+                {{ filter.form }} 
+                <input type="submit" value="Lọc" style="margin-left: 1.5em;"/>
+            </form>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+                <table class="table table-bordered table-striped mb-0" >
+                    <thead>
+                        <tr>
+                        <th class="text-center">Tỉnh/TP</th>
+                        <th class="text-center">Tổng số ca</th>
+                        <th class="text-center">Hôm nay</th>
+                        <th class="text-center">Tử vong</th>
+                        <th class="text-center">Ngày cập nhật</th>
+                    </tr>  
+                    </thead>
+                    <tbody>
+                    {% for item in covid %}
+                    <tr>
+                    <td  style="color: #1b2364;"> {{item.tentinhthanh}}</td>
+                    <td class="text-center"> {{item.tongsoca}}</td>
+                    <td class="text-center"> {{item.homnay}}</td>
+                    <td class="text-center"> {{item.tuvong}}</td>
+                    <td class="text-center"> {{item.ngaycapnhat}}</td>
+                </tr>   
+                    {% endfor %}
+
+                </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+        <div class="container ">
+            <div class="section_title"><h2>SỐ LIỆU VẮC-XIN <span class="nguonthongtin">Nguồn: <a href="https://tiemchungcovid19.gov.vn/portal" target="_blank">Thông tin tiêm chủng</a></span></h2></div>
+            <form  method="get" class=" form-inline">
+                {{ filter.form }} 
+                <input type="submit" value="Lọc" style="margin-left: 1.5em;"/>
+            </form>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered table-striped mb-0" >
+                <thead>
+                    <tr>
+                    <th class="text-center">Tỉnh/Thành phố</th>
+                    <th class="text-center">Kế hoạch phân bổ</th>
+                    <th class="text-center">Phân bổ thực tế</th>
+                    <th class="text-center">Dân số >= 18 tuổi</th>
+                    <th class="text-center">Số liều đã tiêm</th>
+                    <th class="text-center">Ngày cập nhật</th>
+                </tr>  
+                </thead>
+                <tbody>
+                {% for item in Tinhhinhvaccine%}
+                <tr> 
+                    <td style="color: #1b2364;"> {{item.tentinhthanh}}</td>
+                    <td class="text-center"> {{item.khphanbo}}</td>
+                    <td class="text-center"> {{item.phanbothucte}}</td>
+                    <td class="text-center"> {{item.danso}}</td>
+                    <td class="text-center"> {{item.solieudatiem}}</td>
+                    <td class="text-center"> {{item.ngaycapnhat}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+              </table>
+
+        </div>
+
+    <div class="boxes">
+        <div class="container">
+            <div class="section_title"><h2>ĐỊA CHỈ CÁC ĐIỂM TIÊM VẮC-XIN <span class="nguonthongtin">Nguồn: <a href="https://tiemchungcovid19.gov.vn/portal" target="_blank">Thông tin tiêm chủng</a></span></h2></div>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered table-striped mb-0" >
+                <thead>
+                    <tr>
+                    <th class="text-center">Tên điểm tiêm</th>
+                    <th class="text-center">Số nhà/đường</th>
+                    <th class="text-center">Xã Phường</th>
+                    <th class="text-center">Quận/huyện</th>
+                    <th class="text-center">Tỉnh/TP</th>
+                    <th class="text-center">Cán bộ quản lý</th>
+                </tr>  
+                </thead>
+                <tbody>
+                {% for item in diadiemtiem%}
+                <tr> 
+                    <td style="color: #1b2364;"> {{item.tendiemtiem}}</td>
+                    <td class="" style="width: 200px;"> {{item.sonha|truncatechars:20}}</td>
+                    <td class="text-center" style="width: 150px;"> {{item.xaphuong}}</td>
+                    <td class="text-center" style="width: 130px;"> {{item.quanhuyen}}</td>
+                    <td class="text-center" style="width: 150px"> {{item.tentinhthanh}}</td>
+                    <td class="" style="width: 180px;"> {{item.nguoiquanly}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+              </table>
+        </div>
+    </div>
+    </div>
+    <br><br>
+</div>
+<div class="cta">
+    <div class="cta_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/cta.jpg'%}" data-speed="0.8"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="cta_content text-center">
+                    <h2>Cần tư vấn tại chỗ?</h2>
+                    <h3 style="color: aliceblue;"> Sử dụng ngay Chatbot tư vấn về Covid-19 </h3>
+                    <div class="button cta_button"><a href="#">Bắt đầu chat</a></div>
+                </div>
+            </div>
+        </div>
+    </div>		
+</div>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+	</script>
+
+	<script>
+		var xValues = [10,15,20,25,30,35,40,45,50];
+		new Chart("chart1", {
+		type: "line",
+		
+		data: {
+			labels: xValues,
+			datasets: [{
+			data: [18,25,36,27,42,30,24,37,48],
+			borderColor: "aliceblue",
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+              xAxes: [{gridLines: {  drawOnChartArea: false, color:"grey"
+				  				 } ,
+			  					ticks: {
+									fontColor: "aliceblue",
+									fontSize: 12	}}],
+              yAxes: [{gridLines: {  drawOnChartArea: false, color:"grey"
+				  				} ,
+			  					ticks: {
+									fontColor: "aliceblue",
+									fontSize: 12	}}]
+              },
+			  
+			                            },
+
+		});
+	</script>
+	<script>
+		var xValues = [10,15,20,25,30,35,40,45,50];
+		new Chart("chart2", {
+		type: "line",
+		
+		data: {
+			labels: xValues,
+			datasets: [{
+			data: [18,25,36,27,42,30,24,37,48],
+			borderColor: "#2fff00",
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+              xAxes: [{gridLines: {  drawOnChartArea: false, color:"grey"
+				  				 } ,
+			  					ticks: {
+									fontColor: "aliceblue",
+									fontSize: 12	}}],
+              yAxes: [{gridLines: {  drawOnChartArea: false, color:"grey"
+				  				} ,
+			  					ticks: {
+									fontColor: "aliceblue",
+									fontSize: 12	}}]
+              },
+			  
+			                            },
+
+		});
+	</script>
+	<script>
+		var xValues = [10,15,20,25,30,35,40,45,50];
+		new Chart("chart3", {
+		type: "line",
+		
+		data: {
+			labels: xValues,
+			datasets: [{
+			data: [18,25,36,27,42,30,24,37,48],
+			borderColor: "#ff1500",
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+              xAxes: [{gridLines: {  drawOnChartArea: false, color:"grey"
+				  				 } ,
+			  					ticks: {
+									fontColor: "aliceblue",
+									fontSize: 12	}}],
+              yAxes: [{gridLines: {  drawOnChartArea: false, color:"grey"
+				  				} ,
+			  					ticks: {
+									fontColor: "aliceblue",
+									fontSize: 12	}}]
+              },
+			  
+			                            },
+
+		});
+	</script>
+    
+{% endblock %}

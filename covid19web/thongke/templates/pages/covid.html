@@ -1,0 +1,431 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic_responsive.css'%}">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> 
+
+{% endblock %}
+{% block content %}
+
+
+<div class="home">
+    <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/about.jpg'%}" data-speed="0.8"></div>
+    <div class="home_container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="home_content">
+                        <div class="home_title"><span>TÌNH HÌNH DỊCH BỆNH </span> </div>
+                        <div class="breadcrumbs">
+                            <ul>
+                                <li><a href="/">TRANG CHỦ</a></li>
+                                <li>THỐNG KÊ</li>
+                                <li>TÌNH HÌNH COVID</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <br><br>
+        
+    <div class="container">
+            <div class="row">
+                <div class="col-lg-6" style="width: 80%;">
+                    <div class="total">
+                        <h3>TRÊN THẾ GIỚI</h3>
+                        <div class="row">
+                            <div class="total_mini" style="color: red;">
+                                <h4>TỔNG SỐ CA NHIỄM</h4>
+                                <p style="color: #e64302; font-size: 20px;">{% load humanize %}{{tongsoca_tg|intcomma:False}}</p>
+                            </div>
+                            <div class="total_mini" style="color: black;">
+                                <h4>TỔNG SỐ CA TỬ VONG</h4>
+                                <p style="color: black; font-size: 20px;">{% load humanize %}{{tuvong_tg|intcomma:False}}</p>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" style="width: 80%; ;">
+                    <div class="total">
+                        <h3>TẠI VIỆT NAM</h3>
+                        <div class="row">
+                            <div class="total_mini" style="color: red;">
+                                <h4>TỔNG SỐ CA NHIỄM</h4>
+                                <p style="color: #e64302; font-size: 20px;">{% load humanize %}{{tongsoca_vn.tongsoca__sum|intcomma:False}}</p>
+                            </div>
+                            <div class="total_mini" style="color: black;">
+                                <h4>TỔNG SỐ CA TỬ VONG</h4>
+                                <p style="color: black; font-size: 20px;">{% load humanize %}{{tuvong_vn.tuvong__sum|intcomma:False}}</p>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <div class="section_title"><h2>SỐ CA TRÊN THẾ GIỚI THEO NGÀY<span class="nguonthongtin">Nguồn: <a href="https://www.worldometers.info/coronavirus/" target="_blank">World Meter</a></span></h2></div>
+            <div class="row">
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments" >
+                        <p class="box_title">Số ca nhiễm</p>
+                        <canvas id="socanhiem_tg" style="width:100%;height: 80%;"></canvas>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca phục hồi</p>
+                        <canvas id="khoi_tg" style="width:100%;height: 80%;"></canvas>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca tử vong	</p>
+                        <canvas id="tuvong_tg" style="width:100%;height: 80%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="boxes">
+    <div class="container">
+        <div class="section_title"><h2>SỐ CA TẠI VIỆT NAM THEO NGÀY<span class="nguonthongtin">Nguồn: <a href="https://covid19.gov.vn/" target="_blank">Bộ Y Tế</a></span></h2></div>
+            <div class="row">
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments" >
+                        <p class="box_title">Số ca nhiễm</p>
+                        <canvas id="socanhiem_vn" style="width:100%;height: 80%;"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca phục hồi</p>
+                        <canvas id="khoi_vn" style="width:100%;height: 80%;"></canvas>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 box_col">
+                    <div class="box box_appointments">
+                        <p class="box_title">Số ca tử vong</p>
+                        <canvas id="tuvong_vn" style="width:100%;height: 80%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <div class="container" id="scn-vn" style="height: 720px;">
+        <div class="section_title"><h2>SỐ CA NHIỄM TẠI VIỆT NAM THEO TỈNH/THÀNH PHỐ <span class="nguonthongtin">Nguồn: <a href="https://covid19.gov.vn/" target="_blank">Bộ Y Tế</a></span></h2></div>
+		<div class="row">
+			<form  method="get" class=" form-inline col-lg-12">
+                {{ filter.form }} 
+                <input type="submit" value="Lọc" style="margin-left: 1.5em;"/>
+            </form>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar col-lg-12" >
+                <table class="table table-bordered table-striped" >
+                    <thead>
+                        <tr>
+							<th class="text-center">Tỉnh/TP</th>
+							<th class="text-center">Tổng số ca</th>
+							<th class="text-center">Hôm nay</th>
+							<th class="text-center">Tử vong</th>
+							<th class="text-center">Ngày cập nhật</th>
+                    	</tr>  
+                    </thead>
+                    <tbody>
+						{% for item in Tinhhinhcovid %}
+						<tr>
+							<td style="color: #1b2364;"> {{item.tentinhthanh}}</td>
+							<td class="text-center">{% load humanize %} {{item.tongsoca|intcomma:False}}</td>
+							<td class="text-center" style="color: #e64302;"> +{% load humanize %}{{item.homnay|intcomma:False}}</td>
+							<td class="text-center"> {% load humanize %}{{item.tuvong|intcomma:False}}</td>
+							<td class="text-center"> {{item.ngaycapnhat}}</td>
+						</tr>   
+						{% endfor %}
+                	</tbody>
+                </table>
+            </div>
+		</div>
+        {% if is_paginated %}
+            <div class="float-right" >
+            <nav aria-label="Page navigation"> <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1#scn-vn" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">begin</span>
+                  </a>
+                </li>   {% endif %}
+                
+                {% for n in page_obj.paginator.page_range %}
+                  {% if page_obj.number == n %}
+                    <li class="page-item active">
+                      <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                    </li>
+                  {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ n }}#scn-vn" >{{ n }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}#scn-vn" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">end</span>
+                    </a>
+                  </li>
+                  {% endif %}   </ul> </nav></div>
+        {% endif %}
+    </div>
+
+
+<div class="cta">
+    <div class="cta_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/cta.jpg'%}" data-speed="0.8"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="cta_content text-center">
+                    <h2>Cần tư vấn tại chỗ?</h2>
+                    <h3 style="color: aliceblue;"> Sử dụng ngay Chatbot tư vấn về Covid-19 </h3>
+                    <div class="button cta_button"><a href="#">Bắt đầu chat</a></div>
+                </div>
+            </div>
+        </div>
+    </div>		
+</div>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.tongsoca}},{% endfor %}];
+	new Chart("socanhiem_vn", {
+	type: "bar",	
+	    data: {
+			labels: xlabel,  
+			datasets: [{
+			data: xdata,
+			borderColor: "#ff1500",
+            backgroundColor: '#f22e1f',
+			fill: true,
+            lineTension: 0.1
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12,
+                    callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            } }}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.khoi}},{% endfor %}];
+	new Chart("khoi_vn", {
+	type: "bar",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#00ff04",
+            backgroundColor: '#00ff04',
+            lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12,
+                    callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            } }}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.tuvong}},{% endfor %}];
+	new Chart("tuvong_vn", {
+	type: "bar",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#fcf7f7",
+            backgroundColor: '#fcf7f7',
+            lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12, }}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in thegioi %}{{ i.tongsoca}},{% endfor %}];
+	new Chart("socanhiem_tg", {
+	type: "bar",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#ff1500",
+            backgroundColor: '#f22e1f',
+            lineTension: 0.1,
+			fill: true
+			},]
+		},
+
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12,
+                    callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            }
+                 }}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in thegioi %}{{ i.khoi}},{% endfor %}];
+	new Chart("khoi_tg", {
+	type: "bar",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#00ff04",
+            backgroundColor: '#00ff04',
+            lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12,
+                    callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            } }}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in thegioi %}{{ i.tuvong}},{% endfor %}];
+	new Chart("tuvong_tg", {
+	type: "bar",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#fcf7f7",
+            backgroundColor: '#fcf7f7',
+            lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12,
+                    callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            } }}],            
+            },	  
+	    },
+	});
+</script>
+
+<script type="text/javascript">
+    function scrollWin() {
+    window.scrollTo(0,500);
+}
+</script>
+{% endblock %}

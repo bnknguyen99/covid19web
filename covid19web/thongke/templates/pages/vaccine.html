@@ -1,0 +1,155 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/statistic_responsive.css'%}">
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> 
+
+{% endblock %}
+{% block content %}
+
+
+<div class="home">
+    <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/about.jpg'%}" data-speed="0.8"></div>
+    <div class="home_container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="home_content">
+                        <div class="home_title"><span>THÔNG TIN TIÊM CHỦNG</span> </div>
+                        <div class="breadcrumbs">
+                            <ul>
+                                <li><a href="/">TRANG CHỦ</a></li>
+                                <li>THỐNG KÊ</li>
+                                <li>THÔNG TIN TIÊM CHỦNG</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container " id="#scn-vn">
+    <div class="section_title"><h2>SỐ LIỆU VẮC-XIN <span class="nguonthongtin">Nguồn: <a href="https://tiemchungcovid19.gov.vn/portal" target="_blank">Thông tin tiêm chủng</a></span></h2></div>
+    <div class="row">
+        <form  method="get" class=" form-inline col-lg-8">
+            {{ filter.form }} 
+            <input type="submit" value="Lọc" style="margin-left: 1.5em;"/>
+        </form>
+        <div class="total_vaccine col-lg-3">
+            <span>TỔNG SỐ LIỀU ĐÃ TIÊM: {% load humanize %}{{tongsomuitiem.solieudatiem__sum|intcomma:False}}</span>
+        </div>
+    </div>
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-bordered table-striped mb-0" >
+            <thead>
+                <tr>
+                    <th class="text-center">Tỉnh/Thành phố</th>
+                    <th class="text-center">Kế hoạch phân bổ</th>
+                    <th class="text-center">Phân bổ thực tế</th>
+                    <th class="text-center">Dân số >= 18 tuổi</th>
+                    <th class="text-center">Số liều đã tiêm</th>
+                    <th class="text-center">Ngày cập nhật</th>
+                </tr>  
+            </thead>
+            <tbody>
+                {% for item in Tinhhinhvaccine%}
+                <tr> 
+                    <td style="color: #1b2364;"> {{item.tentinhthanh}}</td>
+                    <td class="text-center"> {% load humanize %}{{item.khphanbo|intcomma:False}}</td>
+                    <td class="text-center"> {% load humanize %}{{item.phanbothucte|intcomma:False}}</td>
+                    <td class="text-center"> {% load humanize %}{{item.danso|intcomma:False}}</td>
+                    <td class="text-center"> {% load humanize %}{{item.solieudatiem|intcomma:False}}</td>
+                    <td class="text-center"> {% load humanize %}{{item.ngaycapnhat}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+         </table>
+    </div>
+    {% if is_paginated %}
+    <div class="float-right">
+    <nav aria-label="Page navigation"> <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1#scn-vn" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">begin</span>
+          </a>
+        </li>   {% endif %}
+        
+        {% for n in page_obj.paginator.page_range %}
+          {% if page_obj.number == n %}
+            <li class="page-item active">
+              <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+            </li>
+          {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ n }}#scn-vn" >{{ n }}</a></li>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}#scn-vn" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">end</span>
+            </a>
+          </li>
+          {% endif %}   </ul> </nav></div>
+{% endif %}
+</div>
+
+
+<div class="container">
+    <div class="section_title"><h2>ĐỊA CHỈ CÁC ĐIỂM TIÊM VẮC-XIN <span class="nguonthongtin">Nguồn: <a href="https://tiemchungcovid19.gov.vn/portal" target="_blank">Thông tin tiêm chủng</a></span></h2></div>
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-bordered table-striped mb-0" >
+            <thead>
+                <tr>
+                    <th class="text-center">Tên điểm tiêm</th>
+                    <th class="text-center">Số nhà/đường</th>
+                    <th class="text-center">Xã Phường</th>
+                    <th class="text-center">Quận/huyện</th>
+                    <th class="text-center">Tỉnh/TP</th>
+                    <th class="text-center">Cán bộ quản lý</th>
+                </tr>  
+            </thead>
+            <tbody>
+                {% for item in diadiemtiem%}
+                <tr> 
+                    <td style="color: #1b2364;"> {{item.tendiemtiem}}</td>
+                    <td class="" style="width: 200px;"> {{item.sonha|truncatechars:20}}</td>
+                    <td class="text-center" style="width: 150px;"> {{item.xaphuong}}</td>
+                    <td class="text-center" style="width: 130px;"> {{item.quanhuyen}}</td>
+                    <td class="text-center" style="width: 150px"> {{item.tentinhthanh}}</td>
+                    <td class="" style="width: 180px;"> {{item.nguoiquanly}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<br><br>
+
+
+<div class="cta">
+    <div class="cta_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/cta.jpg'%}" data-speed="0.8"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="cta_content text-center">
+                    <h2>Cần tư vấn tại chỗ?</h2>
+                    <h3 style="color: aliceblue;"> Sử dụng ngay Chatbot tư vấn về Covid-19 </h3>
+                    <div class="button cta_button"><a href="#">Bắt đầu chat</a></div>
+                </div>
+            </div>
+        </div>
+    </div>		
+</div>
+
+
+{% endblock %}

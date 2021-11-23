@@ -1,0 +1,321 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block title %}
+Home
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/home_responsive.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css'%}">
+{% endblock %}
+{% load static %}
+{% block content %}
+	
+	<!-- Home -->
+
+<div class="home">
+	<div class="home_slider_container">
+
+		<div class="owl-carousel owl-theme home_slider">
+			<div class="owl-item">
+				<div class="home_slider_background" style="background-image:url({% static 'images/home_background1.jpg' %})"></div>
+				<div class="home_content">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+								<div class="home_content_inner">
+									<div class="home_title"><h1>THÔNG TIN VỀ COVID-19</h1></div>
+									<div class="home_text">
+										<p>Số liệu thống kê, tin tức, hỏi đáp,...</p>
+									</div>
+									<div class="button home_button">
+										<a href="{% url 'thongke' %}">Xem thêm</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="owl-item">
+				<div class="home_slider_background" style="background-image:url({% static 'images/home_background1.jpg' %})"></div>
+				<div class="home_content">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+								<div class="home_content_inner">
+									<div class="home_title"><h1>haha</h1></div>
+									<div class="home_text">
+										<p>Số liệu thống kê, tin tức, hỏi đáp,...</p>
+									</div>
+									<div class="button home_button">
+										<a href="{% url 'thongke' %}">Xem thêm</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="home_slider_progress"></div>
+		<script>
+			var owl = $('.owl-carousel');
+			owl.owlCarousel({
+				items:4,
+				loop:true,
+				margin:10,
+				autoplay:true,
+				autoplayTimeout:1000,
+				autoplayHoverPause:true
+			});
+			$('.play').on('click',function(){
+				owl.trigger('play.owl.autoplay',[1000])
+			})
+			$('.stop').on('click',function(){
+				owl.trigger('stop.owl.autoplay')
+			})
+		</script>
+	</div>
+</div>
+
+	<!-- 3 Boxes -->
+
+	<div class="boxes">
+		<div class="container">
+			<div class="row">
+				<!-- Box -->
+				<div class="col-lg-4 box_col">
+					<div class="box box_appointments" >
+						<p class="box_title">Số ca nhiễm tại Việt Nam</p>
+						<canvas id="socanhiem_vn" style="width:100%;height: 80%;"></canvas>
+					</div>
+				</div>
+
+				<!-- Box -->
+				<div class="col-lg-4 box_col">
+					<div class="box box_appointments">
+						<p class="box_title">Số ca phục hồi tại Việt Nam</p>
+						<canvas id="khoi_vn" style="width:100%;height: 80%;"></canvas>
+					</div>
+				</div>
+
+				<!-- Box -->
+				<div class="col-lg-4 box_col">
+					<div class="box box_appointments">
+						<p class="box_title">Số ca tử vong tại Việt Nam</p>
+						<canvas id="tuvong_vn" style="width:100%;height: 80%;"></canvas>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- About -->
+
+	<div class="about">
+		<div class="container">
+			<div class="row row-lg-eq-height">
+				<!-- About Content -->
+				<div class="col-lg-6">
+					<div class="about_content">
+						<div class="section_title"><h2>TỔNG HỢP DIỄN BIẾN DỊCH </h2></div>
+						<div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 500px">
+							<div class="about_text text-justify" style="padding: 0px 20px;">
+								<h4>{{dienbien.tieude}}</h4>
+									<span>
+										{{dienbien.dienbien|safe|linebreaks}}
+									</span>
+							</div>
+						</div>
+						<div class="button home_button">
+							<a href="{% url 'dienbiendich' %}" target="_blank">Xem thêm</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="about_content">
+						<div class="section_title"><h2>SỐ CA NHIỄM TRONG NGÀY HÔM QUA </h2></div>
+						<div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 500px; top:-1px">
+							<table class="table table-bordered  mb-0" >
+								<thead>
+									<tr>
+										<th class="text-center">Tỉnh/TP</th>
+										<th class="text-center">Tổng số ca</th>
+										<th class="text-center">Hôm nay</th>
+										<th class="text-center">Tử vong</th>
+									</tr>  
+								</thead>
+								<tbody>
+									{% for item in covid %}
+										<tr>
+											<td  style="color: #1b2364;"> {{item.tentinhthanh}}</td>
+											<td class="text-center"> {% load humanize %} {{item.tongsoca|intcomma:False}}</td>
+											<td class="text-center" style="color: #e64302;"> +{% load humanize %} {{item.homnay|intcomma:False}}</td>
+											<td class="text-center"> {% load humanize %} {{item.tuvong|intcomma:False}}</td>
+										</tr>   
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						<div class="button home_button">
+							<a href="{% url 'tinhhinhcovid' %}" target="_blank">Xem thêm</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="services">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="section_title"><h2>TIN TỨC MỚI</h2></div>
+				</div>
+			</div>
+			<div class="row">
+				{% for item in tintuc %}
+				<div class="mini_tintuc col-md-4" >
+					<div class="mini text-justify">
+						<img src="{{item.hinhanh}}" style="width: 100%; height: 50%;">
+						<div class="news_date d-flex flex-column align-items-center justify-content-center">
+							<div class="news_day">{{item.ngaydangbaiviet}}</div>
+					</div>
+						<div class="mini_title"><a href="/tintuc/{{item.idbaiviet}}" target ="_blank"><h4>{{item.tenbaiviet|truncatechars:110}}</h4></a></div>
+						<div class="mini_summarize">
+							{{item.tomtat|truncatechars:200}}
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+
+
+			</div>
+		</div>
+	</div>
+
+	<div class="cta">
+		<div class="cta_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/cta.jpg'%}" data-speed="0.8"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="cta_content text-center">
+						<h2>Cần tư vấn tại chỗ?</h2>
+						<h3 style="color: aliceblue;"> Sử dụng ngay Chatbot tư vấn về Covid-19 </h3>
+						<div class="button cta_button"><a href="#">Bắt đầu chat</a></div>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+	</script>
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.tongsoca}},{% endfor %}];
+	new Chart("socanhiem_vn", {
+	type: "line",	
+	    data: {
+			labels: xlabel,  
+			datasets: [{
+			data: xdata,
+			borderColor: "#ff1500",
+			fill: true,
+            lineTension: 0.1
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12, 
+					callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            }}}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.khoi}},{% endfor %}];
+	new Chart("khoi_vn", {
+	type: "line",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#00ff04",
+            lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12, 
+					callback: function(value, index, values) {
+                return  Intl.NumberFormat().format((value/1000)) + 'N';
+            }}}],            
+            },	  
+	    },
+	});
+</script>
+
+<script>
+	var xlabel = [{% for i in time_vn %} '{{ i }}', {% endfor %}];
+    var xdata = [{% for i in vietnam %}{{ i.tuvong}},{% endfor %}];
+	new Chart("tuvong_vn", {
+	type: "line",	
+	    data: {
+			labels: xlabel,
+			datasets: [{
+			data: xdata,
+			borderColor: "#fcf7f7",
+            lineTension: 0.1,
+			fill: true
+			},]
+		},
+		options: {
+			legend: {display: false},
+			scales: {
+                xAxes: [{gridLines: {  drawOnChartArea: false, color:"white"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12	}}],
+                yAxes: [{gridLines: {  drawOnChartArea: true, color:"grey"
+				  	} ,
+			  	ticks: {
+					fontColor: "aliceblue",
+					fontSize: 12, }}],            
+            },	  
+	    },
+	});
+</script>
+
+{% endblock %}
